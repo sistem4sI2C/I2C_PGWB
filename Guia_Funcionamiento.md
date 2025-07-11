@@ -50,9 +50,9 @@ pip install -r requirements.txt
 
 # Crear archivo .env con las credenciales de la base de datos
 echo "DB_HOST=localhost
-DB_NAME=prb_local
-DB_USER=soporte
-DB_PASSWORD=soporte" > .env
+DB_NAME=tu_base_de_datos
+DB_USER=tu_usuario
+DB_PASSWORD=tu_contraseña" > .env
 
 # Ejecutar el servidor
 python main.py
@@ -159,7 +159,7 @@ La tabla `investigadores` incluye los siguientes campos:
 ### Error de base de datos
 - Verifica las credenciales en el archivo `.env` del backend
 - Asegúrate de que PostgreSQL esté ejecutándose
-- Verifica que la base de datos `prb_local` exista
+- Verifica que la base de datos especificada en `DB_NAME` exista
 
 ## Despliegue en Producción
 

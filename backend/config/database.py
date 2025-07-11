@@ -15,9 +15,9 @@ def get_db_connection():
     try:
         return psycopg2.connect(
             host=os.getenv('DB_HOST', 'localhost'),
-            database=os.getenv('DB_NAME', 'prb_local'),
-            user=os.getenv('DB_USER', 'soporte'),
-            password=os.getenv('DB_PASSWORD', 'soporte')
+            database=os.getenv('DB_NAME', ''),
+            user=os.getenv('DB_USER', ''),
+            password=os.getenv('DB_PASSWORD', '')
         )
     except Exception as e:
         raise Exception(f"Error al conectar a la base de datos: {str(e)}")
