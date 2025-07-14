@@ -21,7 +21,9 @@ app.add_middleware(
 
 # Modelo para el registro
 class RegistroData(BaseModel):
-    nombre_completo: str
+    nombres: str
+    apellidos_paterno: str
+    apellidos_materno: str
     curp: str
     rfc: str
     no_cvu: str
