@@ -42,6 +42,10 @@ def guardar_en_db(datos):
         # Preparar los campos y valores para la inserción
         campos = list(datos.keys())
         valores = [datos[c] for c in campos]
+        # Si la tabla tiene columnas antiguas, ignóralas
+        if 'nombres' in campos: campos.remove('nombres')
+        if 'apellido_paterno' in campos: campos.remove('apellido_paterno')
+        if 'apellido_materno' in campos: campos.remove('apellido_materno')
         
         query = f"""
             INSERT INTO investigadores ({', '.join(campos)})

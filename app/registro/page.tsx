@@ -264,7 +264,7 @@ export default function RegistroPage() {
         archivo_procesado: selectedFile?.name || "",
       }
 
-      // Don't send password confirmation and otra_nacionalidad
+      // No enviar campos innecesarios
       const { confirm_password, otra_nacionalidad, ...dataToSendWithoutConfirm } = dataToSend
 
       console.log("Enviando datos:", dataToSendWithoutConfirm)
@@ -287,7 +287,18 @@ export default function RegistroPage() {
           return
         }
 
-        throw new Error(responseData.error || "Error al guardar los datos")
+        // Mejor manejo de errores para evitar [object Object]
+        let mensajeError = "Error al guardar los datos"
+        if (responseData.error) {
+          if (Array.isArray(responseData.error)) {
+            mensajeError = (responseData.error as any[]).map((e: any) => e.message || JSON.stringify(e)).join(", ")
+          } else if (typeof responseData.error === "object") {
+            mensajeError = JSON.stringify(responseData.error)
+          } else {
+            mensajeError = responseData.error
+          }
+        }
+        throw new Error(mensajeError)
       }
 
       // Redirect to success page
@@ -299,8 +310,16 @@ export default function RegistroPage() {
 
       router.push(`/registro/exito?${urlParams.toString()}`)
     } catch (error) {
-      console.error("Error al registrar:", error)
-      setError(`Error al registrar: ${error instanceof Error ? error.message : "Error desconocido"}`)
+      console.error("Error al registrar:", error);
+      let mensaje = "Error desconocido";
+      if (error instanceof Error) {
+        mensaje = error.message;
+      } else if (Array.isArray(error)) {
+        mensaje = error.map(e => e.message || JSON.stringify(e)).join(", ");
+      } else if (typeof error === "object" && error !== null) {
+        mensaje = JSON.stringify(error);
+      }
+      setError(`Error al registrar: ${mensaje}`);
     } finally {
       setIsLoading(false)
     }

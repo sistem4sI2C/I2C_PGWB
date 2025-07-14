@@ -1,9 +1,21 @@
 import os
 import psycopg2
-from dotenv import load_dotenv
+import sys
 
-# Cargar variables de entorno
-load_dotenv()
+# Agregar el directorio padre al path para importar database_config
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+try:
+    from database_config import DB_CONFIG
+except ImportError:
+    # Configuración por defecto si no existe el archivo
+    DB_CONFIG = {
+        'host': '192.168.1.95',
+        'database': 'pg_wb',
+        'user': 'soporte',
+        'password': 'soporte',
+        'port': 5432
+    }
 
 def get_db_connection():
     """
@@ -13,13 +25,21 @@ def get_db_connection():
         connection: Conexión a la base de datos PostgreSQL
     """
     try:
+        print(f"Intentando conectar a: {DB_CONFIG['host']}:{DB_CONFIG['port']}/{DB_CONFIG['database']}")
+        
         return psycopg2.connect(
-            host=os.getenv('DB_HOST', 'localhost'),
-            database=os.getenv('DB_NAME', 'pg_wb'),
-            user=os.getenv('DB_USER', 'soporte'),
-            password=os.getenv('DB_PASSWORD', 'soporte')
+            host=DB_CONFIG['host'],
+            database=DB_CONFIG['database'],
+            user=DB_CONFIG['user'],
+            password=DB_CONFIG['password'],
+            port=DB_CONFIG['port'],
+            connect_timeout=10  # Timeout de 10 segundos
         )
+    except psycopg2.OperationalError as e:
+        print(f"Error de conexión: {e}")
+        raise Exception(f"Error al conectar a la base de datos remota: {str(e)}")
     except Exception as e:
+        print(f"Error inesperado: {e}")
         raise Exception(f"Error al conectar a la base de datos: {str(e)}")
 
 def init_db():
@@ -35,9 +55,7 @@ def init_db():
         cur.execute("""
             CREATE TABLE IF NOT EXISTS investigadores (
                 id SERIAL PRIMARY KEY,
-                nombres VARCHAR(200),
-                apellido_paterno VARCHAR(100),
-                apellido_materno VARCHAR(100),
+                nombre_completo VARCHAR(200),
                 curp VARCHAR(18) UNIQUE,
                 rfc VARCHAR(13),
                 no_cvu VARCHAR(50),
