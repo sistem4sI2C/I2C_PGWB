@@ -59,7 +59,7 @@ def init_db():
         cur.execute("""
             CREATE TABLE IF NOT EXISTS adm (
                 id SERIAL PRIMARY KEY,
-                user VARCHAR(100) UNIQUE,
+                nombre VARCHAR(100) UNIQUE,
                 correo VARCHAR(100) UNIQUE,
                 contrasena VARCHAR(255)
             )
@@ -69,7 +69,7 @@ def init_db():
         cur.execute("""
             CREATE TABLE IF NOT EXISTS dev (
                 id SERIAL PRIMARY KEY,
-                user VARCHAR(100) UNIQUE,
+                nombre VARCHAR(100) UNIQUE,
                 correo VARCHAR(100) UNIQUE,
                 contrasena VARCHAR(255)
             )
