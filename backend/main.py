@@ -13,7 +13,7 @@ app = FastAPI(title="API de Procesamiento de PDFs y Registro de Investigadores")
 # Configurar CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # En producción, cambiar esto por la URL específica del frontend
+    allow_origins=["https://seccti.vercel.app"],  # En producción, cambiar esto por la URL específica del frontend
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
