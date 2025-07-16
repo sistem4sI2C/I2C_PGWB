@@ -9,6 +9,6 @@ services:
 
 
 buildCommand: |
-  pyenv install 3.10.13
-  pyenv global 3.10.13
-  pip install -r requirements.txt
+    pyenv install 3.13.0
+    pyenv global 3.13.0
+    pip install -r requirements.txt
