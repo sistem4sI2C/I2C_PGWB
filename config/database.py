@@ -1,40 +1,11 @@
-import os
 import psycopg2
-import sys
 
-# Agregar el directorio padre al path para importar database_config
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-try:
-    from database_config import DB_CONFIG
-except ImportError:
-    # Configuración por defecto si no existe el archivo
-    DB_CONFIG = {
-        'host': '192.168.1.95',
-        'database': 'pg_wb',
-        'user': 'soporte',
-        'password': 'soporte',
-        'port': 5432
-    }
+RENDER_DATABASE_URL = "postgresql://admin:Cxa97bJA1xflzhqMfY25ReCxgzbFyBjS@dpg-d1rtr6er433s738kcrq0-a.oregon-postgres.render.com/i2c_wb"
 
 def get_db_connection():
-    """
-    Obtiene una conexión a la base de datos
-    
-    Returns:
-        connection: Conexión a la base de datos PostgreSQL
-    """
     try:
-        print(f"Intentando conectar a: {DB_CONFIG['host']}:{DB_CONFIG['port']}/{DB_CONFIG['database']}")
-        
-        return psycopg2.connect(
-            host=DB_CONFIG['host'],
-            database=DB_CONFIG['database'],
-            user=DB_CONFIG['user'],
-            password=DB_CONFIG['password'],
-            port=DB_CONFIG['port'],
-            connect_timeout=10  # Timeout de 10 segundos
-        )
+        print(f"Conectando usando RENDER_DATABASE_URL: {RENDER_DATABASE_URL}")
+        return psycopg2.connect(RENDER_DATABASE_URL, connect_timeout=10)
     except psycopg2.OperationalError as e:
         print(f"Error de conexión: {e}")
         raise Exception(f"Error al conectar a la base de datos remota: {str(e)}")
