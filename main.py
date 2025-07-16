@@ -76,12 +76,12 @@ async def registro_endpoint(data: RegistroData):
     Endpoint para registrar un investigador en la base de datos
     """
     try:
-        # Convertir el modelo a diccionario
         datos_dict = data.dict()
-        
-        # Guardar en la base de datos
+        print("Datos recibidos en /registro:", datos_dict)  # LOG
+
         resultado = guardar_en_db(datos_dict)
-        
+        print("Resultado de guardar_en_db:", resultado)  # LOG
+
         if not resultado["success"]:
             if resultado.get("duplicado"):
                 return {
@@ -100,6 +100,7 @@ async def registro_endpoint(data: RegistroData):
         }
         
     except Exception as e:
+        print("Error en /registro:", str(e))  # LOG
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/")
